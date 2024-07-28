@@ -1,0 +1,80 @@
+---
+- name: Assert font input
+  ansible.builtin.assert:
+    that:
+      - font_url is defined
+      - font_state in ['present', 'absent']
+
+- name: Add font
+  vars:
+    font_archive: "{{ font_url | basename }}"
+    font_src_dir: "{{ font_archive | split('.') | first }}"
+
+  block:
+    - name: Ensure font directory {{ font_dir }}
+      ansible.builtin.file:
+        path: "{{ font_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Download font {{ font_url }}
+      ansible.builtin.get_url:
+        url: "{{ font_url }}"
+        dest: "/tmp/{{ font_archive }}"
+        mode: '0644'
+
+    - name: Ensure source directory
+      ansible.builtin.file:
+        path: "/tmp/{{ font_src_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Extract font to source directory
+      ansible.builtin.unarchive:
+        src: "/tmp/{{ font_archive }}"
+        dest: "/tmp/{{ font_src_dir }}"
+        remote_src: true
+
+    - name: Find only font files
+      ansible.builtin.find:
+        paths: "/tmp/{{ font_src_dir }}"
+        recurse: true
+        file_type: file
+        use_regex: true
+        patterns: .*\.(ttf|otf|woff2?|eot)$
+      register: found
+
+    - name: Assert extracted font files
+      ansible.builtin.assert:
+        that:
+          - found.files | length > 0
+        fail_msg: there is no valid font extensions found
+
+    - name: Set fact
+      ansible.builtin.set_fact:
+        font_files: "{{ found.files | map(attribute='path') }}"
+
+    - name: Font state present
+      when: font_state == 'present'
+      block:
+        - name: Copy files from source to font directory
+          loop: "{{ font_files }}"
+          loop_control:
+            loop_var: font_file
+          ansible.builtin.copy:
+            src: "{{ font_file }}"
+            dest: "{{ font_dir }}/{{ font_file | basename }}"
+            mode: '0644'
+          notify: Refresh cache
+
+    - name: Font state absent
+      when: font_state == 'absent'
+      block:
+        - name: Remove font files
+          loop: "{{ font_files }}"
+          loop_control:
+            loop_var: font_file
+          ansible.builtin.file:
+            path: "{{ font_dir }}/{{ font_file | basename }}"
+            state: absent
+          notify: Refresh cache

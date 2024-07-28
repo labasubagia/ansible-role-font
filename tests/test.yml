@@ -1,0 +1,10 @@
+---
+- name: Test Local
+  hosts: localhost
+  connection: local
+  roles:
+    - name: Install font per user
+      role: labasubagia.font
+      vars:
+        font_url: https://github.com/adobe-fonts/source-sans/releases/download/3.052R/TTF-source-sans-3.052R.zip
+        font_state: present

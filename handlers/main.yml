@@ -1,0 +1,3 @@
+---
+- name: Refresh cache
+  ansible.builtin.include_tasks: refresh-cache.yml

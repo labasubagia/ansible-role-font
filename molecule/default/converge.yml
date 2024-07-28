@@ -1,0 +1,28 @@
+---
+- name: Include a role from a collection
+  hosts: all
+  pre_tasks:
+    - name: Install dependencies
+      ansible.builtin.apt:
+        name: unzip
+        update_cache: true
+        state: present
+      when: ansible_pkg_mgr == "apt"
+  roles:
+    - name: Install font system wide
+      role: labasubagia.font
+      become: true
+      vars:
+        font_dir: /usr/local/share/fonts/truetype
+        font_url: https://github.com/adobe-fonts/source-sans/releases/download/3.052R/TTF-source-sans-3.052R.zip
+        font_state: present
+    - name: Install font per user
+      role: labasubagia.font
+      vars:
+        font_url: https://github.com/adobe-fonts/source-sans/releases/download/3.052R/TTF-source-sans-3.052R.zip
+        font_state: present
+    - name: Remove font
+      role: labasubagia.font
+      vars:
+        font_url: https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/uigroupcode/YaHei.Consolas.1.12.zip
+        font_state: absent

@@ -1,0 +1,13 @@
+---
+- name: Refresh cache
+  block:
+    - name: Check font-config cache
+      ansible.builtin.command: which fc-cache
+      changed_when: false
+      register: fc
+      ignore_errors: true
+
+    - name: Run cache
+      when: fc.rc == 0
+      ansible.builtin.command: "{{ fc.stdout }} -v"
+      changed_when: false

@@ -1,0 +1,4 @@
+---
+font_url: https://github.com/adobe-fonts/source-sans/releases/download/3.052R/TTF-source-sans-3.052R.zip
+font_dir: "{{ ansible_env.HOME }}/.fonts"
+font_state: 'present'
