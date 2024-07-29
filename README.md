@@ -6,10 +6,11 @@ This role can be used to install font in Linux
 Requirements
 ------------
 - Ansible Core >= 2.1
-- Linux Distribution
-  - Debian >= 10
-  - Ubuntu >= 20.04
-  - Linux Mint >= 21
+- Tested Linux Distribution
+  - Debian 12
+  - Ubuntu  24.04
+  - Linux Mint 21.3
+  - Fedora 40
 > Note: Other distributions likely to work but not been tested
 
 Role Variables

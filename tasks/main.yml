@@ -65,6 +65,7 @@
             src: "{{ font_file }}"
             dest: "{{ font_dir }}/{{ font_file | basename }}"
             mode: '0644'
+            remote_src: true
           notify: Refresh cache
 
     - name: Font state absent

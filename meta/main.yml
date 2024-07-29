@@ -1,8 +1,22 @@
+---
 galaxy_info:
-  author: labasubagia
+  author: Laba Subagia
+  namespace: labasubagia
   role_name: font
   description: Install font in linux
   license: MIT
-  min_ansible_version: '2.1'
-  galaxy_tags: [font]
+  min_ansible_version: '2.16'
+  platforms:
+    - name: Ubuntu
+      versions:
+        - noble
+    - name: Debian
+      versions:
+        - bookworm
+    - name: Fedora
+      versions:
+        - '40'
+  galaxy_tags:
+    - font
+    - system
 dependencies: []
