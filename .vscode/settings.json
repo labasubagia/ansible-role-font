@@ -1,7 +1,7 @@
 {
-    "ansible.python.interpreterPath": "/bin/python3",
-    "cSpell.words": [
-        "labasubagia"
-    ],
-    "editor.formatOnSave": true
+  "ansible.python.interpreterPath": "/bin/python3",
+  "cSpell.words": [
+    "labasubagia"
+  ],
+  "editor.formatOnSave": true
 }
