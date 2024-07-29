@@ -5,6 +5,9 @@
       - font_url is defined
       - font_state in ['present', 'absent']
 
+- name: Install prerequisites
+  ansible.builtin.include_tasks: prerequisites.yml
+
 - name: Add font
   vars:
     font_archive: "{{ font_url | basename }}"
